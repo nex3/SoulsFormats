@@ -278,7 +278,6 @@ namespace SoulsFormats
                                 throw new NotSupportedException($"Unsupported argument type: {arg.GetType()}");
                         }
                     }
-                    bw.Pad(4);
                     ArgData = bw.FinishBytes();
                 }
             }

@@ -197,6 +197,7 @@ namespace SoulsFormats
             /// <summary>
             /// The name of this entry.
             /// </summary>
+            [Order(0)]
             public string Name { get; set; }
 
             internal abstract void Write(BinaryWriterEx bw, int id);

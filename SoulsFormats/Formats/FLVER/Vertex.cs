@@ -26,9 +26,19 @@ namespace SoulsFormats
             public VertexBoneWeights BoneWeights;
 
             /// <summary>
+            /// Whether the vertex uses the BoneWeights struct.
+            /// </summary>
+            public bool UsesBoneWeights;
+
+            /// <summary>
             /// Bones the vertex is weighted to, indexing the parent mesh's bone indices; must be 4 length.
             /// </summary>
             public VertexBoneIndices BoneIndices;
+
+            /// <summary>
+            /// Whether the vertex uses the BoneIndices struct.
+            /// </summary>
+            public bool UsesBoneIndices;
 
             /// <summary>
             /// Vector pointing away from the surface.
@@ -72,6 +82,8 @@ namespace SoulsFormats
                 UVs = new List<Vector3>(uvCapacity);
                 Tangents = new List<Vector4>(tangentCapacity);
                 Colors = new List<VertexColor>(colorCapacity);
+                UsesBoneIndices = false;
+                UsesBoneWeights = false;
             }
 
             /// <summary>
@@ -87,6 +99,8 @@ namespace SoulsFormats
                 Tangents = new List<Vector4>(clone.Tangents);
                 Bitangent = clone.Bitangent;
                 Colors = new List<VertexColor>(clone.Colors);
+                UsesBoneIndices = clone.UsesBoneIndices;
+                UsesBoneWeights = clone.UsesBoneWeights;
             }
 
             /// <summary>
@@ -151,6 +165,8 @@ namespace SoulsFormats
                         }
                         else
                             throw new NotImplementedException($"Read not implemented for {member.Type} {member.Semantic}.");
+
+                        UsesBoneWeights = true;
                     }
                     else if (member.Semantic == LayoutSemantic.BoneIndices)
                     {
@@ -171,6 +187,8 @@ namespace SoulsFormats
                         }
                         else
                             throw new NotImplementedException($"Read not implemented for {member.Type} {member.Semantic}.");
+
+                        UsesBoneIndices = true;
                     }
                     else if (member.Semantic == LayoutSemantic.Normal)
                     {

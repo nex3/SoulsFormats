@@ -169,127 +169,152 @@ namespace SoulsFormats
             /// <summary>
             /// The model of the Part, corresponding to an entry in the ModelParam.
             /// </summary>
+            [Order]
             public string ModelName { get; set; }
             private int ModelIndex;
 
             /// <summary>
             /// A path to a .sib file, presumed to be some kind of editor placeholder.
             /// </summary>
+            [Order]
             public string Placeholder { get; set; }
 
             /// <summary>
             /// Location of the part.
             /// </summary>
+            [Order]
             public Vector3 Position { get; set; }
 
             /// <summary>
             /// Rotation of the part, in degrees.
             /// </summary>
+            [Order]
             public Vector3 Rotation { get; set; }
 
             /// <summary>
             /// Scale of the part, only meaningful for map pieces and objects.
             /// </summary>
+            [Order]
             public Vector3 Scale { get; set; }
 
             /// <summary>
             /// Controls when the part is visible.
             /// </summary>
+            [Order]
             public uint[] DrawGroups { get; private set; }
 
             /// <summary>
             /// Controls when the part is visible.
             /// </summary>
+            [Order]
             public uint[] DispGroups { get; private set; }
 
             /// <summary>
             /// Identifies the part in external files.
             /// </summary>
+            [Order]
             public int EntityID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte LightID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte FogID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte ScatterID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte LensFlareID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte ShadowID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte DofID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte ToneMapID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte ToneCorrectID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte LanternID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte LodParamID { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte IsShadowSrc { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte IsShadowDest { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte IsShadowOnly { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte DrawByReflectCam { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte DrawOnlyReflectCam { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte UseDepthBiasFloat { get; set; }
 
             /// <summary>
             /// Unknown.
             /// </summary>
+            [Order]
             public byte DisablePointLightEffect { get; set; }
 
             internal Part()
@@ -454,27 +479,32 @@ namespace SoulsFormats
                 /// <summary>
                 /// Collision that controls loading of the object.
                 /// </summary>
+                [Order]
                 public string CollisionName { get; set; }
                 private int CollisionIndex;
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public int UnkT08 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public short UnkT0C { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public short UnkT0E { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public int UnkT10 { get; set; }
 
                 /// <summary>
@@ -531,48 +561,57 @@ namespace SoulsFormats
                 /// <summary>
                 /// ID in NPCThinkParam determining AI properties.
                 /// </summary>
+                [Order]
                 public int ThinkParamID { get; set; }
 
                 /// <summary>
                 /// ID in NPCParam determining character properties.
                 /// </summary>
+                [Order]
                 public int NPCParamID { get; set; }
 
                 /// <summary>
                 /// ID of a talk ESD used by the character.
                 /// </summary>
+                [Order]
                 public int TalkID { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public float UnkT14 { get; set; }
 
                 /// <summary>
                 /// ID in CharaInitParam determining equipment and stats for humans.
                 /// </summary>
+                [Order]
                 public int CharaInitID { get; set; }
 
                 /// <summary>
                 /// Collision that controls loading of the enemy.
                 /// </summary>
+                [Order]
                 public string CollisionName { get; set; }
                 private int CollisionIndex;
 
                 /// <summary>
                 /// Regions for the enemy to patrol.
                 /// </summary>
+                [Order]
                 public string[] MovePointNames { get; private set; }
                 private short[] MovePointIndices;
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public int UnkT38 { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public int UnkT3C { get; set; }
 
                 /// <summary>
@@ -689,61 +728,73 @@ namespace SoulsFormats
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public byte HitFilterID { get; set; }
 
                 /// <summary>
                 /// Causes sounds to be modulated when standing on the collision.
                 /// </summary>
+                [Order]
                 public byte SoundSpaceType { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public short EnvLightMapSpotIndex { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public float ReflectPlaneHeight { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public uint[] NvmGroups { get; private set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public int[] VagrantEntityIDs { get; private set; }
 
                 /// <summary>
                 /// Controls displays of the map name on screen or the loading menu.
                 /// </summary>
+                [Order]
                 public short MapNameID { get; set; }
 
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public short DisableStart { get; set; }
 
                 /// <summary>
                 /// If set, disables a bonfire when any enemy is on the collision.
                 /// </summary>
+                [Order]
                 public int DisableBonfireEntityID { get; set; }
 
                 /// <summary>
                 /// An ID used for multiplayer eligibility.
                 /// </summary>
+                [Order]
                 public int PlayRegionID { get; set; }
 
                 /// <summary>
                 /// ID in LockCamParam determining camera properties.
                 /// </summary>
+                [Order]
                 public short LockCamParamID1 { get; set; }
 
                 /// <summary>
                 /// ID in LockCamParam determining camera properties.
                 /// </summary>
+                [Order]
                 public short LockCamParamID2 { get; set; }
 
                 /// <summary>
@@ -821,6 +872,7 @@ namespace SoulsFormats
                 /// <summary>
                 /// Unknown.
                 /// </summary>
+                [Order]
                 public uint[] NvmGroups { get; private set; }
 
                 /// <summary>
@@ -901,6 +953,7 @@ namespace SoulsFormats
                 /// <summary>
                 /// The collision which will load another map.
                 /// </summary>
+                [Order]
                 public string CollisionName { get; set; }
                 private int CollisionIndex;
 

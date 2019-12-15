@@ -53,6 +53,24 @@ namespace SoulsFormats
         /// </summary>
         public List<Row> Rows { get; set; }
 
+        /// <summary>
+        /// Gets a BinaryReaderEx ready to read at the beginning of the 
+        /// specified row's data. Only call this if you know what 
+        /// you are doing.
+        /// </summary>
+        public BinaryReaderEx GetRowReader(Row row)
+        {
+            if (Rows.Contains(row))
+            {
+                brRows.Position = row.Offset;
+                return brRows;
+            }
+            else
+            {
+                throw new ArgumentException("Row does not exist within this PARAM. Cannot read it.");
+            }
+        }
+
         private BinaryReaderEx brRows;
         private Layout layout;
 
