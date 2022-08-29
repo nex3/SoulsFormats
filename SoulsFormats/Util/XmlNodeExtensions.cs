@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace SoulsFormats.XmlExtensions
 {
-    public static class XmlNodeExtensions
+    internal static class XmlNodeExtensions
     {
         private static T ReadT<T>(XmlNode node, string xpath, Func<string, T> parse)
         {

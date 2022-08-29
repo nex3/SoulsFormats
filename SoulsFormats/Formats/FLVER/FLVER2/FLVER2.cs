@@ -203,7 +203,7 @@ namespace SoulsFormats
 
             var faceSets = new List<FaceSet>(faceSetCount);
             for (int i = 0; i < faceSetCount; i++)
-                faceSets.Add(new FaceSet(br, Header, Cache, vertexIndicesSize, dataOffset));
+                faceSets.Add(new FaceSet(br, Header, vertexIndicesSize, dataOffset));
 
             var vertexBuffers = new List<VertexBuffer>(vertexBufferCount);
             for (int i = 0; i < vertexBufferCount; i++)

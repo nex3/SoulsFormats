@@ -74,8 +74,6 @@ namespace SoulsFormats
             /// </summary>
             public List<VertexColor> Colors;
 
-
-
             private Queue<Vector3> uvQueue;
             private Queue<Vector4> tangentQueue;
             private Queue<VertexColor> colorQueue;
@@ -262,7 +260,7 @@ namespace SoulsFormats
                         }
                         else
                             throw new NotImplementedException($"Read not implemented for {member.Type} {member.Semantic}.");
-                            
+
                         UsesBoneIndices = true;
                     }
                     else if (member.Semantic == LayoutSemantic.Normal)

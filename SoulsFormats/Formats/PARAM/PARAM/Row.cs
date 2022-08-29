@@ -69,7 +69,7 @@ namespace SoulsFormats
                     cells.Add(new Cell(cell));
                 }
                 Cells = cells;
-}
+            }
 
             internal Row(BinaryReaderEx br, PARAM parent, ref long actualStringsOffset)
             {
