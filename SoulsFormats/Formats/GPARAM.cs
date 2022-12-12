@@ -20,6 +20,11 @@ namespace SoulsFormats
         public bool Unk0D;
 
         /// <summary>
+        /// Unknown.
+        /// </summary>
+        public short Unk42;
+
+        /// <summary>
         /// Unknown; in DS2, number of entries in UnkBlock2.
         /// </summary>
         public int Unk14;
@@ -97,7 +102,9 @@ namespace SoulsFormats
             int unk3Count = br.ReadInt32();
             offsets.Unk3 = br.ReadInt32();
             offsets.Unk3ValueIDs = br.ReadInt32();
-            br.AssertInt32(0);
+
+            br.AssertInt16(0);
+            Unk42 = br.ReadInt16(); //br.AssertInt32(0);
 
             if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro)
             {
@@ -174,7 +181,10 @@ namespace SoulsFormats
             bw.WriteInt32(Unk3s.Count);
             bw.ReserveInt32("UnkOffset3");
             bw.ReserveInt32("Unk3ValuesOffset");
-            bw.WriteInt32(0);
+
+            bw.WriteInt16(0);
+            bw.WriteInt16(Unk42);
+            //bw.WriteInt32(0);
 
             if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro)
             {
