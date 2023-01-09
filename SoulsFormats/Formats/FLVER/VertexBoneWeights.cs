@@ -47,6 +47,39 @@ namespace SoulsFormats
                     }
                 }
             }
+
+            /// <summary>
+            /// If the vertex weights don't add up to 1, normalize it. 
+            /// </summary>
+            public void Normalize()
+            {
+                float sum = A + B + C + D;
+                if (sum != 1)
+                {
+                    float difference = 1f - sum;
+                    for (int i = 0; i < this.Length; i++)
+                    {
+                        this[i] += (this[i] / sum) * difference;
+                    }
+                    /*int count = 0;
+                    for (int i = 0; i < this.Length; i++)
+                    {
+                        if (this[i] != 0)
+                        {
+                            count++;
+                        }
+                    }
+                    float add = difference / (float)count;
+                    for (int i = 0; i < this.Length; i++)
+                    {
+                        if (this[i] != 0)
+                        {
+                            this[i] += add;
+                        }
+                    }*/
+
+                }
+            }
         }
     }
 }
