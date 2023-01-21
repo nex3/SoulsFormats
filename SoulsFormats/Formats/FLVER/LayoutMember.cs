@@ -90,7 +90,7 @@ namespace SoulsFormats
             {
                 Unk00 = br.ReadInt16();
                 Unk02 = (char)br.ReadInt16();
-                br.ReadInt32();
+                br.AssertInt32(structOffset);
                 Type = br.ReadEnum32<LayoutType>();
                 Semantic = br.ReadEnum32<LayoutSemantic>();
                 Index = br.ReadInt32();

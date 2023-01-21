@@ -312,8 +312,6 @@ namespace SoulsFormats
             bw.WriteInt32(0);
             bw.WriteInt32(0);
             bw.WriteInt16(Header.Unk68);
-            //bw.WriteByte(0);
-            //bw.WriteByte(0);
             bw.WriteInt16((short)Header.Unk6B);
             bw.WriteInt32(0);
             bw.WriteInt32(0);
