@@ -179,7 +179,9 @@ namespace SoulsFormats
 
             br.AssertInt32(0);
             br.AssertInt32(0);
-            Header.Unk68 = br.AssertInt32(0, 1, 2, 3, 4);
+            Header.Unk68 = br.AssertInt16(0, 1, 2, 3, 4, 5);
+            Header.Unk6B = (char)br.ReadInt16();
+
             br.AssertInt32(0);
             br.AssertInt32(0);
             br.AssertInt32(0);
@@ -214,7 +216,7 @@ namespace SoulsFormats
 
             BufferLayouts = new List<BufferLayout>(bufferLayoutCount);
             for (int i = 0; i < bufferLayoutCount; i++)
-                BufferLayouts.Add(new BufferLayout(br));
+                BufferLayouts.Add(new BufferLayout(br, Header));
 
             var textures = new List<Texture>(textureCount);
             for (int i = 0; i < textureCount; i++)
@@ -309,7 +311,10 @@ namespace SoulsFormats
 
             bw.WriteInt32(0);
             bw.WriteInt32(0);
-            bw.WriteInt32(Header.Unk68);
+            bw.WriteInt16(Header.Unk68);
+            //bw.WriteByte(0);
+            //bw.WriteByte(0);
+            bw.WriteInt16((short)Header.Unk6B);
             bw.WriteInt32(0);
             bw.WriteInt32(0);
             bw.WriteInt32(0);

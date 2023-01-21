@@ -55,8 +55,12 @@ namespace SoulsFormats
         /// <summary>
         /// Unknown.
         /// </summary>
-        public int Unk68 { get; set; }
+        public short Unk68 { get; set; }
 
+        /// <summary>
+        /// Unknown.
+        /// </summary>
+        public char Unk6B { get; set; }
         /// <summary>
         /// Creates a FLVERHeader with default values.
         /// </summary>

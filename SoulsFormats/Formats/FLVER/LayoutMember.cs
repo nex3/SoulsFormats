@@ -12,8 +12,12 @@ namespace SoulsFormats
             /// <summary>
             /// Unknown; 0, 1, or 2.
             /// </summary>
-            public int Unk00 { get; set; }
+            public short Unk00 { get; set; }
 
+            /// <summary>
+            /// Unknown; 0, or 128.
+            /// </summary>
+            public char Unk02 { get; set; }
             /// <summary>
             /// Format used to store this member.
             /// </summary>
@@ -74,7 +78,7 @@ namespace SoulsFormats
             /// <summary>
             /// Creates a LayoutMember with the specified values.
             /// </summary>
-            public LayoutMember(LayoutType type, LayoutSemantic semantic, int index = 0, int unk00 = 0)
+            public LayoutMember(LayoutType type, LayoutSemantic semantic, int index = 0, byte unk00 = 0)
             {
                 Unk00 = unk00;
                 Type = type;
@@ -84,8 +88,9 @@ namespace SoulsFormats
 
             internal LayoutMember(BinaryReaderEx br, int structOffset)
             {
-                Unk00 = br.ReadInt32();
-                br.AssertInt32(structOffset);
+                Unk00 = br.ReadInt16();
+                Unk02 = (char)br.ReadInt16();
+                br.ReadInt32();
                 Type = br.ReadEnum32<LayoutType>();
                 Semantic = br.ReadEnum32<LayoutSemantic>();
                 Index = br.ReadInt32();
@@ -93,7 +98,8 @@ namespace SoulsFormats
 
             internal void Write(BinaryWriterEx bw, int structOffset)
             {
-                bw.WriteInt32(Unk00);
+                bw.WriteInt16(Unk00);
+                bw.WriteInt16((short)Unk02);
                 bw.WriteInt32(structOffset);
                 bw.WriteUInt32((uint)Type);
                 bw.WriteUInt32((uint)Semantic);
@@ -108,7 +114,6 @@ namespace SoulsFormats
                 return $"{Type}: {Semantic}";
             }
         }
-
         /// <summary>
         /// Format of a vertex property.
         /// </summary>
