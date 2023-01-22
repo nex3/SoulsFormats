@@ -51,6 +51,7 @@ namespace SoulsFormats
                         case LayoutType.Byte4C:
                         case LayoutType.UV:
                         case LayoutType.Byte4E:
+                        case LayoutType.Unk2D:
                             return 4;
 
                         case LayoutType.Float2:
@@ -65,9 +66,6 @@ namespace SoulsFormats
 
                         case LayoutType.Float4:
                             return 16;
-
-                        case LayoutType.Unknown:
-                            return 4;
 
                         default:
                             throw new NotImplementedException($"No size defined for buffer layout type: {Type}");
@@ -177,7 +175,7 @@ namespace SoulsFormats
             /// <summary>
             /// Unknown.
             /// </summary>
-            Unknown = 0x2D,
+            Unk2D = 0x2D,
 
             /// <summary>
             /// Unknown.
