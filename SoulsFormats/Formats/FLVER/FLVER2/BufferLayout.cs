@@ -41,7 +41,7 @@ namespace SoulsFormats
                             //this.Add(member);
                         }
                         structOffset = 0;
-                        for (int i = 3; i < Capacity; i++)
+                        for (int i = 3; i < memberCount; i++)
                         {
                             var member = new FLVER.LayoutMember(br, structOffset);
                             structOffset += member.Size;
