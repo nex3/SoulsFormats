@@ -219,12 +219,17 @@ namespace SoulsFormats
                         Header.TextureCount = br.AssertInt32(1, 6);
                         Header.Unk2 = br.AssertInt32(0xD);
                     }
+                    else if (platform == TPFPlatform.PS5)
+                    {
+                        Header.TextureCount = br.AssertInt32(1, 6);
+                        Header.Unk2 = br.AssertInt32(0x9);
+                    }
                 }
 
                 uint nameOffset = br.ReadUInt32();
                 bool hasFloatStruct = br.AssertInt32(0, 1) == 1;
 
-                if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone)
+                if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone || platform == TPFPlatform.PS5)
                     Header.DXGIFormat = br.ReadInt32();
 
                 if (hasFloatStruct)
@@ -281,7 +286,7 @@ namespace SoulsFormats
                         if (flag2 != 0)
                             bw.WriteInt32(Header.Unk2);
                     }
-                    else if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone)
+                    else if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone || platform == TPFPlatform.PS5)
                     {
                         bw.WriteInt32(Header.TextureCount);
                         bw.WriteInt32(Header.Unk2);
@@ -291,7 +296,7 @@ namespace SoulsFormats
                 bw.ReserveUInt32($"FileName{index}");
                 bw.WriteInt32(FloatStruct == null ? 0 : 1);
 
-                if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone)
+                if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone || platform == TPFPlatform.PS5)
                     bw.WriteInt32(Header.DXGIFormat);
 
                 if (FloatStruct != null)
@@ -365,6 +370,11 @@ namespace SoulsFormats
             /// Headerless DDS with DX10 metadata.
             /// </summary>
             Xbone = 5,
+
+            /// <summary>
+            /// New PS5 DDS texture format.
+            /// </summary>
+            PS5 = 8,
         }
 
         /// <summary>
