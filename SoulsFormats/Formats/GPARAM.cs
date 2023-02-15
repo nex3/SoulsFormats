@@ -514,8 +514,6 @@ namespace SoulsFormats
             /// Four bytes, used for BGRA.
             /// </summary>
             Byte4 = 0xF,
-
-            Unk = 0x69
         }
 
         /// <summary>
