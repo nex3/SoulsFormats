@@ -106,14 +106,14 @@ namespace SoulsFormats
             br.AssertInt16(0);
             Unk42 = br.ReadInt16(); //br.AssertInt32(0);
 
-            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro)
+            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro || Game == GPGame.EldenRing)
             {
                 offsets.CommentOffsetsOffsets = br.ReadInt32();
                 offsets.CommentOffsets = br.ReadInt32();
                 offsets.Comments = br.ReadInt32();
             }
 
-            if (Game == GPGame.Sekiro)
+            if (Game == GPGame.Sekiro || Game == GPGame.EldenRing)
             {
                 Unk50 = br.ReadSingle();
             }
@@ -129,7 +129,7 @@ namespace SoulsFormats
             for (int i = 0; i < unk3Count; i++)
                 Unk3s.Add(new Unk3(br, Game, offsets));
 
-            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro)
+            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro || Game == GPGame.EldenRing)
             {
                 int[] commentOffsetsOffsets = br.GetInt32s(offsets.CommentOffsetsOffsets, groupCount);
                 int commentOffsetsLength = offsets.Comments - offsets.CommentOffsets;
@@ -186,14 +186,14 @@ namespace SoulsFormats
             bw.WriteInt16(Unk42);
             //bw.WriteInt32(0);
 
-            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro)
+            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro || Game == GPGame.EldenRing)
             {
                 bw.ReserveInt32("CommentOffsetsOffsetsOffset");
                 bw.ReserveInt32("CommentOffsetsOffset");
                 bw.ReserveInt32("CommentsOffset");
             }
 
-            if (Game == GPGame.Sekiro)
+            if (Game == GPGame.Sekiro || Game == GPGame.EldenRing)
             {
                 bw.WriteSingle(Unk50);
             }
@@ -240,7 +240,7 @@ namespace SoulsFormats
             for (int i = 0; i < Unk3s.Count; i++)
                 Unk3s[i].WriteValues(bw, Game, i, unk3ValuesOffset);
 
-            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro)
+            if (Game == GPGame.DarkSouls3 || Game == GPGame.Sekiro || Game == GPGame.EldenRing)
             {
                 bw.FillInt32("CommentOffsetsOffsetsOffset", (int)bw.Position);
                 for (int i = 0; i < Groups.Count; i++)
@@ -277,6 +277,10 @@ namespace SoulsFormats
             /// Dark Souls 3 and Bloodborne
             /// </summary>
             DarkSouls3 = 3,
+            /// <summary>
+            /// ER
+            /// </summary>
+            EldenRing = 4,
 
             /// <summary>
             /// Sekiro
@@ -510,6 +514,8 @@ namespace SoulsFormats
             /// Four bytes, used for BGRA.
             /// </summary>
             Byte4 = 0xF,
+
+            Unk = 0x69
         }
 
         /// <summary>
@@ -647,7 +653,7 @@ namespace SoulsFormats
                     br.StepIn(offsets.ValueIDs + valueIDsOffset);
                     {
                         ValueIDs = new List<int>(valueCount);
-                        if (game == GPGame.Sekiro)
+                        if (game == GPGame.Sekiro || game == GPGame.EldenRing)
                             UnkFloats = new List<float>(valueCount);
                         else
                             UnkFloats = null;
@@ -655,7 +661,7 @@ namespace SoulsFormats
                         for (int i = 0; i < valueCount; i++)
                         {
                             ValueIDs.Add(br.ReadInt32());
-                            if (game == GPGame.Sekiro)
+                            if (game == GPGame.Sekiro || game == GPGame.EldenRing)
                                 UnkFloats.Add(br.ReadSingle());
                         }
                     }
@@ -757,7 +763,7 @@ namespace SoulsFormats
                 for (int i = 0; i < ValueIDs.Count; i++)
                 {
                     bw.WriteInt32(ValueIDs[i]);
-                    if (game == GPGame.Sekiro)
+                    if (game == GPGame.Sekiro || game == GPGame.EldenRing)
                         bw.WriteSingle(UnkFloats[i]);
                 }
             }
@@ -817,7 +823,7 @@ namespace SoulsFormats
                 GroupIndex = br.ReadInt32();
                 int count = br.ReadInt32();
                 uint valueIDsOffset = br.ReadUInt32();
-                if (game == GPGame.Sekiro)
+                if (game == GPGame.Sekiro || game == GPGame.EldenRing)
                     Unk0C = br.ReadInt32();
 
                 ValueIDs = new List<int>(br.GetInt32s(offsets.Unk3ValueIDs + valueIDsOffset, count));
@@ -828,7 +834,7 @@ namespace SoulsFormats
                 bw.WriteInt32(GroupIndex);
                 bw.WriteInt32(ValueIDs.Count);
                 bw.ReserveInt32($"Unk3ValueIDsOffset{index}");
-                if (game == GPGame.Sekiro)
+                if (game == GPGame.Sekiro || game == GPGame.EldenRing)
                     bw.WriteInt32(Unk0C);
             }
 
