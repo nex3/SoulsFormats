@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 
 namespace SoulsFormats
 {
@@ -236,7 +235,7 @@ namespace SoulsFormats
                 throw ex;
 
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            if (compression != DCX.Type.None && path.Split('.').Last() != "dcx")
+            if (compression != DCX.Type.None && path.Split('.')[^1] != "dcx")
             {
                 path += ".dcx";
             }
