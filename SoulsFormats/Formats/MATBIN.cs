@@ -295,16 +295,6 @@ namespace SoulsFormats
                         return s;
                 }
             }
-
-            public Param Clone()
-            {
-                Param p = new Param();
-                p.Value = Value;
-                p.Key = Key;
-                p.Name = Name;
-                p.Type = Type;
-                return p;
-            }
         }
 
         /// <summary>
@@ -366,15 +356,6 @@ namespace SoulsFormats
 
                 bw.FillInt64($"SamplerPathOffset[{index}]", bw.Position);
                 bw.WriteUTF16(Path, true);
-            }
-            public Sampler Clone()
-            {
-                Sampler s = new Sampler();
-                s.Type = Type;
-                s.Path = Path;
-                s.Key = Key;
-                s.Unk14 = Unk14;
-                return s;
             }
         }
     }
