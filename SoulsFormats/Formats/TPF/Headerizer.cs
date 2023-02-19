@@ -109,7 +109,9 @@ namespace SoulsFormats
             int mipCount = texture.Mipmaps;
             TPF.TexType type = texture.Type;
 
-            dds.dwFlags = DDSD.CAPS | DDSD.HEIGHT | DDSD.WIDTH | DDSD.PIXELFORMAT | DDSD.MIPMAPCOUNT;
+            dds.dwFlags = DDSD.CAPS | DDSD.HEIGHT | DDSD.WIDTH | DDSD.PIXELFORMAT;
+            if (mipCount > 1)
+                dds.dwFlags |= DDSD.MIPMAPCOUNT;
             if (CompressedBPB.ContainsKey(format))
                 dds.dwFlags |= DDSD.LINEARSIZE;
             else if (UncompressedBPP.ContainsKey(format))
@@ -119,12 +121,18 @@ namespace SoulsFormats
             dds.dwWidth = width;
 
             if (CompressedBPB.ContainsKey(format))
+                if (format == 102)
+                    dds.dwPitchOrLinearSize = Math.Max(1, (width + 3) / 4) * Math.Max(1, (width + 3) / 4) * CompressedBPB[format];
+                else if (format == 0)
+                    dds.dwPitchOrLinearSize = (Math.Max(1, (width + 3) / 4) * Math.Max(1, (width + 3) / 4) * CompressedBPB[format]) / 2;
+                else
                 dds.dwPitchOrLinearSize = Math.Max(1, (width + 3) / 4) * CompressedBPB[format];
             else if (UncompressedBPP.ContainsKey(format))
                 dds.dwPitchOrLinearSize = (width * UncompressedBPP[format] + 7) / 8;
 
-            // This line serves only to remind me that I didn't forget about dwDepth, I left it 0 on purpose.
-            dds.dwDepth = 0;
+            if (format == 102 || format == 0)
+                dds.dwDepth = 1;
+            else dds.dwDepth = 0;
 
             if (mipCount == 0)
                 mipCount = DetermineMipCount(width, height);
