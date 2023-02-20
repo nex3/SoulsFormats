@@ -126,7 +126,7 @@ namespace SoulsFormats
                 else if (format == 0)
                     dds.dwPitchOrLinearSize = (Math.Max(1, (width + 3) / 4) * Math.Max(1, (width + 3) / 4) * CompressedBPB[format]) / 2;
                 else
-                dds.dwPitchOrLinearSize = Math.Max(1, (width + 3) / 4) * CompressedBPB[format];
+                    dds.dwPitchOrLinearSize = Math.Max(1, (width + 3) / 4) * CompressedBPB[format];
             else if (UncompressedBPP.ContainsKey(format))
                 dds.dwPitchOrLinearSize = (width * UncompressedBPP[format] + 7) / 8;
 
@@ -227,7 +227,7 @@ namespace SoulsFormats
         {
             int imageCount = type == TPF.TexType.Cubemap ? 6 : 1;
             int padDimensions = 1;
-            if (format == 102)
+            if (format == 102 || format == 0)
                 padDimensions = 32;
 
             List<Image> images;
@@ -238,13 +238,15 @@ namespace SoulsFormats
             else
                 throw new NotSupportedException($"Cannot decompose format {format}.");
 
-            if (format == 10 || format == 102)
+            if (format == 10 || format == 102 || format == 0) // || format == 0
             {
                 int texelSize = -1;
                 if (format == 10)
                     texelSize = 4;
                 else if (format == 102)
                     texelSize = 16;
+                else if (format == 0)
+                    texelSize = 8;
 
                 foreach (Image image in images)
                 {
@@ -266,10 +268,25 @@ namespace SoulsFormats
 
         private static byte[] DeswizzleMipLevel(byte[] swizzled, byte format, int texelSize, int width, int height, int padDimensions)
         {
-            int paddedWidth = PadTo(width, padDimensions);
-            int paddedHeight = PadTo(height, padDimensions);
-            int texelWidth = paddedWidth;
+            int paddedWidth;
+            int paddedHeight;
+            int texelWidth;
+            if (format == 105)
+            {
+                paddedWidth = width;
+                paddedHeight = height;
+                texelWidth = paddedWidth;
+            }
+            else
+            {
+                paddedWidth = PadTo(width, padDimensions);
+                paddedHeight = PadTo(height, padDimensions);
+                texelWidth = paddedWidth;
+            }
+
             if (format == 102)
+                texelWidth = paddedWidth / 4;
+            else if (format == 0)
                 texelWidth = paddedWidth / 4;
 
             byte[] unswizzled;
@@ -284,7 +301,7 @@ namespace SoulsFormats
                 }
                 unswizzled = trimmed;
             }
-            else if (format == 102)
+            else if (format == 102 || format == 0 )
             {
                 unswizzled = DeswizzlePS4(swizzled, format, texelSize, paddedWidth, paddedHeight);
                 byte[] trimmed = new byte[(int)Math.Max(1, width / 4f) * (int)Math.Max(1, height / 4f) * texelSize];
@@ -331,9 +348,22 @@ namespace SoulsFormats
         {
             byte[] unswizzled = new byte[swizzled.Length];
 
-            int blocksH = (width + 31) / 32;
-            int blocksV = (height + 31) / 32;
-            int swizzleBlockSize = 32;
+            int blocksH;
+            int blocksV ;
+            int swizzleBlockSize;
+
+            if (format == 105)
+            {
+                blocksH = (width + 15) / 16;
+                blocksV = (height + 15) / 16;
+                swizzleBlockSize = 16;
+            }
+            else
+            {
+                blocksH = (width + 31) / 32;
+                blocksV = (height + 31) / 32;
+                swizzleBlockSize = 32;
+            }
 
             int readOffset = 0;
             int h;
@@ -347,7 +377,17 @@ namespace SoulsFormats
                     DeswizzlePS4Block(swizzled, unswizzled, ref readOffset, width, texelSize, 32, 32, writeOffset, 2);
                     h += swizzleBlockSize / 4 * texelSize;
                 }
-                v += swizzleBlockSize * width;
+                if (format == 105)
+                {
+                    v += swizzleBlockSize * swizzleBlockSize;
+                }
+                else
+                {
+                    if (texelSize == 8)
+                        v += swizzleBlockSize * width / 2;
+                    else
+                        v += swizzleBlockSize * width;
+                }
             }
 
             return unswizzled;
