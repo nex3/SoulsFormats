@@ -227,7 +227,7 @@ namespace SoulsFormats
         {
             int imageCount = type == TPF.TexType.Cubemap ? 6 : 1;
             int padDimensions = 1;
-            if (format == 102 || format == 0)
+            if (format == 102 || format == 0 || format == 108 || format == 103)
                 padDimensions = 32;
 
             List<Image> images;
@@ -238,16 +238,16 @@ namespace SoulsFormats
             else
                 throw new NotSupportedException($"Cannot decompose format {format}.");
 
-            if (format == 10 || format == 102 || format == 0) // || format == 0
+            if (format == 10 || format == 102 || format == 0 || format == 108 || format == 103) // || format == 0
             {
                 int texelSize = -1;
                 if (format == 10)
                     texelSize = 4;
+                else if (format == 0 || format == 108 || format == 103)
+                    texelSize = 8;
                 else if (format == 102)
                     texelSize = 16;
-                else if (format == 0)
-                    texelSize = 8;
-
+                
                 foreach (Image image in images)
                 {
                     for (int i = 0; i < image.MipLevels.Count; i++)
@@ -284,9 +284,7 @@ namespace SoulsFormats
                 texelWidth = paddedWidth;
             }
 
-            if (format == 102)
-                texelWidth = paddedWidth / 4;
-            else if (format == 0)
+            if (format == 102 || format == 108 || format == 0 || format == 103)
                 texelWidth = paddedWidth / 4;
 
             byte[] unswizzled;
@@ -301,7 +299,7 @@ namespace SoulsFormats
                 }
                 unswizzled = trimmed;
             }
-            else if (format == 102 || format == 0 )
+            else if (format == 102 || format == 0 || format == 108 || format == 103)
             {
                 unswizzled = DeswizzlePS4(swizzled, format, texelSize, paddedWidth, paddedHeight);
                 byte[] trimmed = new byte[(int)Math.Max(1, width / 4f) * (int)Math.Max(1, height / 4f) * texelSize];
