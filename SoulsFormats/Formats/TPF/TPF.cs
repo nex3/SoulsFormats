@@ -216,12 +216,12 @@ namespace SoulsFormats
                     }
                     else if (platform == TPFPlatform.PS4 || platform == TPFPlatform.Xbone)
                     {
-                        Header.TextureCount = br.AssertInt32(1, 6);
-                        Header.Unk2 = br.AssertInt32(0xD);
+                        Header.TextureCount = br.ReadInt32(); //can be basically anything bc of Volume
+                        Header.Unk2 = br.AssertInt32(0xD, 0x8);
                     }
                     else if (platform == TPFPlatform.PS5)
                     {
-                        Header.TextureCount = br.AssertInt32(1, 6);
+                        Header.TextureCount = br.ReadInt32();
                         Header.Unk2 = br.AssertInt32(0x9);
                     }
                 }
