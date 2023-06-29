@@ -25,4 +25,10 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
 	<PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="oo2core_6_win64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
