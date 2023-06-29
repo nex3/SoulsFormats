@@ -216,6 +216,7 @@ namespace SoulsFormats
                     dds.header10.miscFlag = RESOURCE_MISC.TEXTURECUBE;
             }
 
+
             var bytes = RebuildPixelData(texture.Bytes, format, width, height, mipCount, texture.Header.TextureCount);
             return dds.Write(bytes.Span);
         }
@@ -224,6 +225,7 @@ namespace SoulsFormats
         {
             return (int)Math.Ceiling(Math.Log(Math.Max(width, height), 2)) + 1;
         }
+
 
         private static Memory<byte> RebuildPixelData(Memory<byte> bytes, byte format, short width, short height, int mipCount, int imageCount)
         {
@@ -234,6 +236,7 @@ namespace SoulsFormats
                 padDimensions = 32;
 
             List<Image> images;
+
             int texelSize = -1;
             if (CompressedBPB.TryGetValue(format, out var value))
             {
