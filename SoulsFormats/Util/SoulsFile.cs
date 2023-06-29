@@ -234,6 +234,10 @@ namespace SoulsFormats
                 throw ex;
 
             Directory.CreateDirectory(Path.GetDirectoryName(path));
+            if (compression != DCX.Type.None && path.Split('.')[^1] != "dcx")
+            {
+                path += ".dcx";
+            }
             using (FileStream stream = File.Create(path))
             {
                 BinaryWriterEx bw = new BinaryWriterEx(false, stream);
