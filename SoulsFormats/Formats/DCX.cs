@@ -86,9 +86,10 @@ namespace SoulsFormats
             type = Type.Unknown;
 
             string magic = br.ReadASCII(4);
+            string format;
             if (magic == "DCP\0")
             {
-                string format = br.GetASCII(4, 4);
+                format = br.GetASCII(4, 4);
                 if (format == "DFLT")
                 {
                     type = Type.DCP_DFLT;
@@ -100,7 +101,7 @@ namespace SoulsFormats
             }
             else if (magic == "DCX\0")
             {
-                string format = br.GetASCII(0x28, 4);
+                format = br.GetASCII(0x28, 4);
                 if (format == "EDGE")
                 {
                     type = Type.DCX_EDGE;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNext.IO.MemoryMappedFiles;
+using System;
 using System.Collections.Generic;
 
 namespace SoulsFormats
@@ -6,7 +7,7 @@ namespace SoulsFormats
     /// <summary>
     /// A general-purpose file container used since DS2. Extension: .*bnd
     /// </summary>
-    public class BND4 : SoulsFile<BND4>, IBinder, IBND4
+    public class BND4 : MountedSoulsFile<BND4>, IBinder, IBND4
     {
         /// <summary>
         /// The files contained within this BND4.
@@ -53,6 +54,8 @@ namespace SoulsFormats
         /// </summary>
         public byte Extended { get; set; }
 
+        private IMappedMemoryOwner _mappedMemory = null;
+
         /// <summary>
         /// Creates an empty BND4 formatted for DS3.
         /// </summary>
@@ -80,8 +83,9 @@ namespace SoulsFormats
         /// <summary>
         /// Deserializes file data from a stream.
         /// </summary>
-        protected override void Read(BinaryReaderEx br)
+        protected override void Read(BinaryReaderEx br, IMappedMemoryOwner owner)
         {
+            _mappedMemory = owner;
             List<BinderFileHeader> fileHeaders = ReadHeader(this, br);
             Files = new List<BinderFile>(fileHeaders.Count);
             foreach (BinderFileHeader fileHeader in fileHeaders)
@@ -201,6 +205,12 @@ namespace SoulsFormats
             }
 
             bw.FillInt64("HeadersEnd", bw.Position);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _mappedMemory?.Dispose();
+            _mappedMemory = null;
         }
     }
 }
