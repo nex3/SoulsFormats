@@ -285,8 +285,8 @@ namespace SoulsFormats
                 texelWidth = (int)(Math.Ceiling(paddedWidth / 4f) * Math.Ceiling(paddedHeight / 4f) * texelSize);
             }
 
-            /*if (format == 102 || format == 108 || format == 0 || format == 103 || format == 1 || format == 115 )
-                texelWidth = paddedWidth / 4;*/ //maybe needed?
+            if (format == 102 || format == 108 || format == 0 || format == 103 || format == 1 || format == 115 )
+                texelWidth = paddedWidth / 4; //maybe needed?
             /*else if (format == 105)
                 texelWidth = 4;*/
 
