@@ -69,8 +69,8 @@ namespace SoulsFormats
         /// </summary>
         public static BXF4 Read(Memory<byte> bhdBytes, string bdtPath)
         {
-            using MemoryMappedFile dataFile = MemoryMappedFile.CreateFromFile(bdtPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
-            using IMappedMemoryOwner fsData = dataFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read);
+            MemoryMappedFile dataFile = MemoryMappedFile.CreateFromFile(bdtPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
+            IMappedMemoryOwner fsData = dataFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read);
             BinaryReaderEx bhdReader = new BinaryReaderEx(false, bhdBytes);
             BinaryReaderEx bdtReader = new BinaryReaderEx(false, fsData.Memory);
             return new BXF4(bhdReader, bdtReader);
@@ -81,8 +81,8 @@ namespace SoulsFormats
         /// </summary>
         public static BXF4 Read(string bhdPath, Memory<byte> bdtBytes)
         {
-            using MemoryMappedFile headerFile = MemoryMappedFile.CreateFromFile(bhdPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
-            using IMappedMemoryOwner fsHeader = headerFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read);
+            MemoryMappedFile headerFile = MemoryMappedFile.CreateFromFile(bhdPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
+            IMappedMemoryOwner fsHeader = headerFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read);
             BinaryReaderEx bhdReader = new BinaryReaderEx(false, fsHeader.Memory);
             BinaryReaderEx bdtReader = new BinaryReaderEx(false, bdtBytes);
             return new BXF4(bhdReader, bdtReader);
@@ -93,9 +93,9 @@ namespace SoulsFormats
         /// </summary>
         public static BXF4 Read(string bhdPath, string bdtPath)
         {
-            using MemoryMappedFile headerFile = MemoryMappedFile.CreateFromFile(bhdPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read),
+            MemoryMappedFile headerFile = MemoryMappedFile.CreateFromFile(bhdPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read),
                 dataFile = MemoryMappedFile.CreateFromFile(bdtPath, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
-            using IMappedMemoryOwner fsHeader = headerFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read),
+            IMappedMemoryOwner fsHeader = headerFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read),
                 fsData = dataFile.CreateMemoryAccessor(0, 0, MemoryMappedFileAccess.Read);
             BinaryReaderEx bhdReader = new BinaryReaderEx(false, fsHeader.Memory);
             BinaryReaderEx bdtReader = new BinaryReaderEx(false, fsData.Memory);
