@@ -8,7 +8,8 @@ on:
     branches:
       - everything
   pull_request:
-    branches: [ "everything" ]
+    branches:
+      - everything
 
 jobs:
   build:
@@ -40,23 +41,23 @@ jobs:
           path: |
             **/bin/**/*.dll
             **/bin/**/*.pdb
-            # Add more file patterns if necessary
 
       - name: Create Release
         id: create_release
-        if: github.ref == 'refs/heads/everything'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/everything'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
           draft: false
           prerelease: false
+          target_commitish: ${{ github.sha }}
 
       - name: Get Artifact ID
         id: get_artifact
-        run: echo "::set-output name=artifact_id::${{ steps.publish_artifact.outputs.artifact_id }}"
+        run: echo "artifact_id=${{ steps.publish_artifact.outputs.artifact_id }}" >> $GITHUB_OUTPUT
 
       - name: Attach Artifact to Release
         uses: actions/github-script@v4
