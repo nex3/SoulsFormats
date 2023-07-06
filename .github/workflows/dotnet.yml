@@ -5,78 +5,88 @@ name: .NET
 
 on:
   push:
-    branches: [ "everything" ]
-  pull_request:
-    branches: [ "everything" ]
+    branches:
+      - everything
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         dotnet-version: [ '6.0.x', '7.0.x' ]
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ matrix.dotnet-version }}
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Publish Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: SoulsFormats-kotn3l
-        path: |
-          **/bin/**/*.dll
-          **/bin/**/*.pdb
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+      - uses: actions/checkout@v3
 
-    - name: Get Artifact ID
-      id: get_artifact
-      run: echo "::set-output name=artifact_id::${{ steps.publish_artifact.outputs.artifact_id }}"
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
 
-    - name: Attach Artifact to Release
-      uses: actions/github-script@v4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        script: |
-          const artifactId = '${{ steps.get_artifact.outputs.artifact_id }}';
-          const releaseId = '${{ steps.create_release.outputs.id }}';
-          const commitHash = '${{ github.sha }}';
-          const artifactName = `library-${commitHash.substr(0, 7)}`;
+      - name: Restore dependencies
+        run: dotnet restore
 
-          const { data: artifact } = await github.actions.getArtifact({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            artifact_id: artifactId
-          });
+      - name: Build
+        run: dotnet build --no-restore
 
-          await github.actions.downloadArtifact({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            artifact_id: artifactId,
-            archive_format: 'zip'
-          });
+      - name: Publish Artifact
+        id: publish_artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: SoulsFormats-kotn3l
+          path: |
+            **/bin/**/*.dll
+            **/bin/**/*.pdb
+            # Add more file patterns if necessary
 
-          await github.repos.uploadReleaseAsset({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            release_id: releaseId,
-            name: artifactName + '.zip',
-            data: artifact,
-            headers: { 'content-type': artifact.archive_download_format }
-          });
+      - name: Create Release
+        id: create_release
+        if: github.ref == 'refs/heads/everything'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Get Artifact ID
+        id: get_artifact
+        run: echo "::set-output name=artifact_id::${{ steps.publish_artifact.outputs.artifact_id }}"
+
+      - name: Attach Artifact to Release
+        uses: actions/github-script@v4
+        if: github.ref == 'refs/heads/everything'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const artifactId = '${{ steps.get_artifact.outputs.artifact_id }}';
+            const releaseId = '${{ steps.create_release.outputs.id }}';
+            const commitHash = '${{ github.sha }}';
+            const artifactName = `SoulsFormats-kotn3l-${commitHash.substr(0, 7)}`;
+
+            const { data: artifact } = await github.actions.getArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: artifactId
+            });
+
+            await github.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: artifactId,
+              archive_format: 'zip'
+            });
+
+            await github.repos.uploadReleaseAsset({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
+              name: artifactName + '.zip',
+              data: artifact,
+              headers: { 'content-type': artifact.archive_download_format }
+            });
+
