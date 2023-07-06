@@ -57,7 +57,7 @@ jobs:
 
       - name: Get Artifact ID
         id: get_artifact
-        run: echo "::set-output name=artifact_id::${{ steps.publish_artifact.outputs.artifact_id }}"
+        run: echo "artifact_id=${{ steps.publish_artifact.outputs.artifact_id }}" >> $GITHUB_OUTPUT
 
       - name: Attach Artifact to Release
         uses: actions/github-script@v4
