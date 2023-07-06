@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - everything
+  pull_request:
+    branches: [ "everything" ]
 
 jobs:
   build:
@@ -58,7 +60,7 @@ jobs:
 
       - name: Attach Artifact to Release
         uses: actions/github-script@v4
-        if: github.ref == 'refs/heads/everything'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/everything'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
