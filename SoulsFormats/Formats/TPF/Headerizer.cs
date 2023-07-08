@@ -232,7 +232,7 @@ namespace SoulsFormats
             //int imageCount = type == TPF.TexType.Cubemap ? 6 : 1;
             //imageCount = type == TPF.TexType.Volume ? 28 : imageCount;
             int padDimensions = 1;
-            if (format == 102 || format == 0 || format == 108 || format == 103)
+            if (format == 102 || format == 0 || format == 108 || format == 103 || format == 1)
                 padDimensions = 32;
 
             List<Image> images;
