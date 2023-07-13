@@ -233,7 +233,6 @@ namespace SoulsFormats
             if (!Validate(out Exception ex))
                 throw ex;
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
             if (compression != DCX.Type.None && path.Split('.')[^1] != "dcx")
             {
                 path += ".dcx";
