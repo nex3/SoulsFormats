@@ -15,7 +15,7 @@ namespace SoulsFormats
             public short Unk00 { get; set; }
 
             /// <summary>
-            /// Unknown; 0, or 128.
+            /// Unknown; 0, or 32768.
             /// </summary>
             public char Unk02 { get; set; }
             /// <summary>
