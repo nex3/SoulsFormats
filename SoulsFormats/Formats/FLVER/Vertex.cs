@@ -179,8 +179,27 @@ namespace SoulsFormats
             /// </summary>
             internal void PrepareWrite()
             {
-                //uvQueue = new Queue<Vector3>(UVs);
-                //tangentQueue = new Queue<Vector4>(Tangents);
+                uvQueue = new Queue<Vector3>();
+                fixed (float* uvPtr = UVs)
+                {
+                    for (byte i = 0; i < UVCount; i++)
+                    {
+                        uvQueue.Enqueue(GetUV(i));
+                    }
+                }
+                tangentQueue = new Queue<Vector4>();
+                fixed (float* tangentPtr = Tangents)
+                {
+                    for (byte i = 0; i < TangentCount; i++)
+                    {
+                        tangentQueue.Enqueue(GetTangent(i));
+                    }
+                }
+                if (Colors == null)
+                {
+                    Colors = new List<VertexColor>();
+                    Colors.Add(new VertexColor(255,255,255,255));
+                }
                 colorQueue = new Queue<VertexColor>(Colors);
             }
 
