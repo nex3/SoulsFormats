@@ -452,8 +452,10 @@ namespace SoulsFormats
                 }
                 faceSetIndex += mesh.FaceSets.Count;
 
-                foreach (FLVER.Vertex vertex in mesh.Vertices)
-                    vertex.PrepareWrite();
+                for (int j = 0; j < mesh.VertexCount; j++)
+                {
+                    mesh.Vertices[j].PrepareWrite();
+                }
 
                 for (int j = 0; j < mesh.VertexBuffers.Count; j++)
                 {
