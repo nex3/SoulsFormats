@@ -102,7 +102,18 @@ namespace SoulsFormats
         public static Memory<byte> Headerize(TPF.Texture texture)
         {
             if (SFEncoding.ASCII.GetString(texture.Bytes.Span[..4].ToArray(), 0, 4) == "DDS ")
+            {
+                var dds2 = new DDS(texture.Bytes);
+                texture.Header = new TPF.TexHeader();
+                texture.Header.Width = (short)dds2.dwWidth;
+                texture.Header.Height = (short)dds2.dwHeight;
+                texture.Header.TextureCount = dds2.dwMipMapCount;
+                if (dds2.header10 != null)
+                {
+                    texture.Header.DXGIFormat = (int)dds2.header10.dxgiFormat;
+                }
                 return texture.Bytes;
+            }
 
             var dds = new DDS();
             byte format = texture.Format;
@@ -232,7 +243,7 @@ namespace SoulsFormats
             //int imageCount = type == TPF.TexType.Cubemap ? 6 : 1;
             //imageCount = type == TPF.TexType.Volume ? 28 : imageCount;
             int padDimensions = 1;
-            if (format == 102 || format == 0 || format == 108 || format == 103 || format == 1 || format == 106 || format == 107)
+            if (format == 102 || format == 0 || format == 108 || format == 103 || format == 1 || format == 106 || format == 107 || format == 109)
                 padDimensions = 32;
 
             List<Image> images;
@@ -285,7 +296,7 @@ namespace SoulsFormats
                 texelWidth = (int)(Math.Ceiling(paddedWidth / 4f) * Math.Ceiling(paddedHeight / 4f) * texelSize);
             }
 
-            if (format == 102 || format == 108 || format == 0 || format == 103 || format == 1 || format == 115 || format == 106 || format == 107)
+            if (format == 102 || format == 108 || format == 0 || format == 103 || format == 1 || format == 115 || format == 106 || format == 107 || format == 109)
                 texelWidth = paddedWidth / 4; //maybe needed?
             /*else if (format == 105)
                 texelWidth = 4;*/
