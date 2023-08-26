@@ -60,6 +60,11 @@ namespace SoulsFormats
         private FlverCache Cache = null;
 
         /// <summary>
+        /// Only present in Armored Core 6, flver version 0x2001B. Usually 16, but before it was always 0
+        /// </summary>
+        public int Unk74 { get; set; }
+
+        /// <summary>
         /// Creates a FLVER with a default header and empty lists.
         /// </summary>
         public FLVER2()
@@ -146,7 +151,7 @@ namespace SoulsFormats
             // BB:  20013, 20014
             // DS3: 20013, 20014
             // SDT: 2001A, 20016 (test chr)
-            Header.Version = br.AssertInt32(0x20005, 0x20007, 0x20009, 0x2000B, 0x2000C, 0x2000D, 0x2000E, 0x2000F, 0x20010, 0x20013, 0x20014, 0x20016, 0x2001A);
+            Header.Version = br.AssertInt32(0x20005, 0x20007, 0x20009, 0x2000B, 0x2000C, 0x2000D, 0x2000E, 0x2000F, 0x20010, 0x20013, 0x20014, 0x20016, 0x2001A, 0x2001B);
 
             int dataOffset = br.ReadInt32();
             br.ReadInt32(); // Data length
@@ -185,7 +190,7 @@ namespace SoulsFormats
 
             br.AssertInt32(0);
             br.AssertInt32(0);
-            br.AssertInt32(0);
+            Unk74 = br.ReadInt32();
             br.AssertInt32(0);
             br.AssertInt32(0);
 
@@ -316,7 +321,7 @@ namespace SoulsFormats
             bw.WriteInt16((short)Header.Unk6B);
             bw.WriteInt32(0);
             bw.WriteInt32(0);
-            bw.WriteInt32(0);
+            bw.WriteInt32(Unk74);
             bw.WriteInt32(0);
             bw.WriteInt32(0);
 
@@ -430,7 +435,7 @@ namespace SoulsFormats
 
             int alignment = Header.Version <= 0x2000E ? 0x20 : 0x10;
             bw.Pad(alignment);
-            if (Header.Version == 0x2000F || Header.Version == 0x20010)
+            if (Header.Version == 0x2000F || Header.Version == 0x20010 || Header.Version == 0x2001A || Header.Version == 0x2001B)
                 bw.Pad(0x20);
 
             int dataStart = (int)bw.Position;
@@ -471,7 +476,7 @@ namespace SoulsFormats
 
             bw.Pad(alignment);
             bw.FillInt32("DataSize", (int)bw.Position - dataStart);
-            if (Header.Version == 0x2000F || Header.Version == 0x20010)
+            if (Header.Version == 0x2000F || Header.Version == 0x20010 || Header.Version == 0x2001A || Header.Version == 0x2001B)
                 bw.Pad(0x20);
         }
     }
