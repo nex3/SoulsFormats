@@ -318,6 +318,11 @@ namespace SoulsFormats
                             Normal = ReadByteNormXYZ(br);
                             NormalW = br.ReadByte();
                         }
+                        else if (member.Type == LayoutType.ShortBoneIndices)
+                        {
+                            Normal = ReadShortNormXYZAC6(br);
+                            NormalW = br.ReadUInt16();
+                        }
                         else if (member.Type == LayoutType.Short4toFloat4A)
                         {
                             Normal = ReadShortNormXYZ(br);
@@ -526,6 +531,14 @@ namespace SoulsFormats
 
             public static Vector3 ReadFloat16NormXYZ(BinaryReaderEx br)
                 => new Vector3(ReadFloat16(br), ReadFloat16(br), ReadFloat16(br));
+
+            //This is intentional, this format stores these int16s in unsigned byte ranges.
+            private static float ReadShortNormAC6(BinaryReaderEx br)
+                => (br.ReadInt16() - 127) / 127f;
+
+            private static Vector3 ReadShortNormXYZAC6(BinaryReaderEx br)
+                => new Vector3(ReadShortNormAC6(br), ReadShortNormAC6(br), ReadShortNormAC6(br));
+
             #endregion
 
             internal void Write(BinaryWriterEx bw, List<LayoutMember> layout, float uvFactor)
