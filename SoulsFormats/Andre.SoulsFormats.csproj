@@ -19,12 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Formats\STAYPARAM\**" />
-    <EmbeddedResource Remove="Formats\STAYPARAM\**" />
-    <None Remove="Formats\STAYPARAM\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
     <PackageReference Include="DotNext.IO" Version="4.15.0" />
